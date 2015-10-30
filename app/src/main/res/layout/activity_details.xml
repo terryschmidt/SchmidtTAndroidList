@@ -8,7 +8,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.transitiontose.schmidttandroidlist.DetailsActivity">
+    tools:context="com.transitiontose.schmidttandroidlist.DetailsActivity"
+    android:background="#82ff8d">
 
 
     <LinearLayout
@@ -16,8 +17,8 @@
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/image"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_margin="4dp"/>
         <TextView android:id="@+id/text1"
             android:textSize="24sp"
@@ -25,14 +26,15 @@
             android:layout_marginLeft="8dp"
             android:layout_gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/text2"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:typeface="monospace" />
 
 </LinearLayout>

@@ -1,18 +1,10 @@
 package com.transitiontose.schmidttandroidlist;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -20,40 +12,86 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+// Terry Schmidt, CSC472, Fall 2015
+
 public class MainActivity extends ListActivity {
 
-    private static final String TAG = "MainActivity";
+    private static final Game[] NESgames = {
+            new Game("Castlevania", Game.Cover.castlevania, "Vampire hunters fight with Dracula",
+                    "The game takes place in the year 1691 where players control Simon Belmont who is tasked with defeating the vampire Dracula. Castlevania is often considered to be one of the best games on the NES."),
+
+            new Game("Contra", Game.Cover.contra, "Run and gun action",
+                    "In 2633, the evil Red Falcon Organization have set a base on the Galuga archipelago near New Zealand in a plot to conquer the world. Two commandos, Pfc. Bill Rizer and Pfc. Lance Bean of the Contra unit (an elite group of soldiers specializing in guerrilla warfare), are sent to the island to destroy the enemy forces and uncover the true nature of the alien entity controlling them."),
+
+            new Game("Double Dragon 2", Game.Cover.doubledragon2, "Side-scrolling beat em' up",
+                    "The sequel involves Billy and Jimmy Lee in a mission to avenge their girlfriend Marian after she is shot to death by the Black Warriors leader Willy, who is retaliating against the Lee brothers after his defeat at the end of the previous game. Double Dragon II was initially developed as an upgrade kit for the original Double Dragon, but evolved into a stand-alone game due to an increase in memory size, resulting in the developers reusing assets for both games."),
+
+            new Game("Duck Hunt", Game.Cover.duckhunt, "Hunting simulation",
+                    "In Duck Hunt, players use the NES Zapper to shoot ducks that appear on the television screen. The ducks appear one or two at a time, and the player is given three shots to shoot them down. The player receives points upon shooting each duck. If the player shoots the required number of ducks in a single round, the player will advance to the next round; otherwise, the player will receive a game over."),
+
+            new Game("Jackal", Game.Cover.jackal, "War simulation",
+                    "The Jackal unit is an elite group of four soldiers that have undergone a harsh training regiment to survive in any environment. The team is composed of Colonel Decker, Lieutenant Bob, Sergeant Quint and Corporal Grey. They have been given a mission to drive two armed jeeps into hostile territory in order to rescue and extract POWs."),
+
+            new Game("Kirby", Game.Cover.kirby, "Action, platform and puzzle solving",
+                    "After Kirby wakes up from his after-lunch nap without having any dreams, he goes to the Fountain of Dreams to investigate. In doing so, he discovers that King Dedede has stolen the Star Rod, the source of power to the Fountain of Dreams, and broken it into seven pieces, giving six fragments to his allies, Whispy Woods, Paint Roller, Mr. Shine and Mr. Bright, Kracko, Heavy Mole, and Meta Knight, also keeping one for himself. Without the Star Rod, all of the inhabitants of Dream Land are becoming restless and unable to dream. Kirby decides to track down the fragments of the Star Rod and bring them back to the Fountain of Dreams in order to restore everyone's dreams."),
+
+            new Game("Kung Fu", Game.Cover.kungfu, "Side-scrolling Kung Fu",
+                    "The players controls Thomas, the titular Kung-Fu Master, as he fights his way through the five levels of the Devil's Temple in order to rescue his girlfriend Sylvia from the mysterious crime boss Mr. X. It is considered to be one of the precursors to the beat 'em up genre."),
+
+            new Game("Lode Runner", Game.Cover.loderunner, "Puzzle game",
+                    "Lode Runner is a puzzle video game, first published by Brøderbund in 1983. It is one of the first games to include a level editor, a feature that allows players to create their own levels for the game. This feature bolstered the game's popularity, as magazines such as Computer Gaming World held contests to see who could build the best level."),
+
+            new Game("Super Mario Bros", Game.Cover.mariobros, "Side-scrolling adventure to rescue Princess",
+                    "The player takes on the role of the main protagonist of the series, Mario. Mario's younger brother, Luigi, is only playable by the second player in the game's multiplayer mode, and assumes the same plot role and functionality as Mario. The objective is to race through the Mushroom Kingdom, survive the main antagonist Bowser's forces, and save Princess Toadstool."),
+
+            new Game("Super Mario Bros 2", Game.Cover.mariobros2, "Side-scrolling adventure to rescue Princess",
+                    "Super Mario Bros. 2 is a 2D side-scrolling platform game. The objective of the game is to navigate the player's character through the dream world Subcon and defeat the main antagonist Wart. The player takes on the roles of the four protagonists of the game: Mario, Luigi, Toad, and Princess Toadstool. All four characters can run, jump, and climb ladders or vines, but each character possesses a unique strength that causes them to be controlled differently."),
+
+            new Game("Mega Man", Game.Cover.megaman, "Adventure game as a robot",
+                    "The genius Dr. Light and his assistant, Dr. Wily, co-create the humanoid robot Mega Man alongside six other advanced robots: Cut Man, Guts Man, Ice Man, Bomb Man, Fire Man, and Elec Man. These robots were designed to perform industrial tasks including construction, demolition, logging, electrical operations, or labor in extreme temperatures, for the benefit of Monsteropolis's citizens. Dr. Wily grows disloyal of his partner and reprograms these six robots to aid himself in taking control of the world. Dr. Light sends Mega Man to defeat his fellow creations and stop Dr. Wily."),
+
+            new Game("Mega Man 2", Game.Cover.megaman2, "Adventure game as a robot",
+                    "Mega Man 2 takes place after the original Mega Man, which is set in an unspecified year during the 21st century (the year 200X). Dr. Wily, the series' main antagonist, builds a new fortress and army of robotic henchmen, led by eight new Robot Masters of his design: Metal Man, Air Man, Bubble Man, Quick Man, Crash Man, Flash Man, Heat Man, and Wood Man. Mega Man is sent by his creator, Dr. Light, to defeat Dr. Wily and his Robot Masters. Mega Man crushes the eight new Robot Masters and then challenges Wily himself. In the final fight, Mega Man defeats Dr. Wily's holographic projection device. After the scientist begs for mercy, Mega Man spares Wily and returns home."),
+
+            new Game("Super Tecmo Bowl", Game.Cover.supertecmobowl, "Football simulation",
+                    "Tecmo Super Bowl, added the NFL license making it the first NES game to feature both actual NFL teams and NFL players of the time. Unlike the original Tecmo Bowl for the NES, which consisted of twelve teams, a truncated roster, and limited play selection; Tecmo Super Bowl featured the complete league of (then 28) teams, expanded rosters, expanded playbooks, statistics tracking (including NFL Records) and many other improvements. Subsequent games in the series would build on this foundation."),
+
+            new Game("Metroid", Game.Cover.metroid, "Dark depths of a strange planet",
+                    "Metroid takes place first in the fictional Metroid universe. Space Pirates attack a Galactic Federation-owned space research vessel and seize samples of Metroid creatures. Dangerous floating organisms, Metroids can latch on to any organism and drain its life energy to kill it. The Space Pirates plan to replicate Metroids by exposing them to beta rays and then using them as biological weapons to destroy all living beings that oppose them."),
+
+            new Game("Tetris", Game.Cover.tetris, "Puzzle game",
+                    "Tetriminos are game pieces shaped like tetrominoes, geometric shapes composed of four square blocks each. A random sequence of Tetriminos fall down the playing field (a rectangular vertical shaft, called the \"well\" or \"matrix\"). The objective of the game is to manipulate these Tetriminos, by moving each one sideways (if the player feels the need) and rotating it by 90 degree units, with the aim of creating a horizontal line of ten units without gaps. When such a line is created, it disappears, and any block above the deleted line will fall. When a certain number of lines are cleared, the game enters a new level. As the game progresses, each level causes the Tetriminos to fall faster, and the game ends when the stack of Tetriminos reaches the top of the playing field and no new Tetriminos are able to enter. Some games also end after a finite number of levels or lines.")
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
 
-        setListAdapter(new WineAdapter());
+        setListAdapter(new GameAdapter());
     }
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        Log.d(TAG, "onListItemClick position=" + position + " id=" + id + " " + WINES[position].getName());
         Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-        intent.putExtra("WineName", WINES[position].getName());
-        intent.putExtra("WineDescription", WINES[position].getLongDescription());
-        intent.putExtra("WineIcon", Wine.getIconResource(WINES[position].getType()));
+        intent.putExtra("GameName", NESgames[position].getName());
+        intent.putExtra("GameDescription", NESgames[position].getLongDescription());
+        intent.putExtra("GameCover", Game.getIconResource(NESgames[position].getCover()));
         startActivity(intent);
     }
 
-    class WineAdapter extends BaseAdapter {
+    class GameAdapter extends BaseAdapter {
 
         private LayoutInflater inflater;
 
         @Override
         public int getCount() {
-            return WINES.length;
+            return NESgames.length;
         }
 
         @Override
         public Object getItem(int i) {
-            return WINES[i];
+            return NESgames[i];
         }
 
         @Override
@@ -67,144 +105,18 @@ public class MainActivity extends ListActivity {
             if (convertView == null) {
                 if (inflater == null)
                     inflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                row = inflater.inflate(R.layout.wine_list_item, parent, false);
+                row = inflater.inflate(R.layout.game_list_item, parent, false);
             }
 
-            ImageView icon = (ImageView) row.findViewById(R.id.image);
-            TextView name = (TextView) row.findViewById(R.id.text1);
-            TextView description = (TextView) row.findViewById(R.id.text2);
+            ImageView gameCover = (ImageView) row.findViewById(R.id.image);
+            TextView gameName = (TextView) row.findViewById(R.id.text1);
+            TextView gameDescription = (TextView) row.findViewById(R.id.text2);
 
-            Wine wine = WINES[position];
-            name.setText(wine.getName());
-            description.setText(wine.getShortDescription());
-            icon.setImageResource(Wine.getIconResource(wine.getType()));
+            Game game = NESgames[position];
+            gameName.setText(game.getName());
+            gameDescription.setText(game.getShortDescription());
+            gameCover.setImageResource(Game.getIconResource(game.getCover()));
             return row;
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private static final Wine[] WINES = {
-            new Wine("Barbera",
-                    Wine.Type.Red,
-                    "Full-bodied Italian Red",
-                    "Barbera is a red wine grape found primarily in Italy's Piedmont region. It produces hearty red wines with deep ruby colors, full body and low tannin levels."),
-
-            new Wine("Cabernet Sauvignon",
-                    Wine.Type.Red,
-                    "Full-bodied, intense Red",
-                    "Cabernet Sauvignon is a red wine known for its depth of flavor, aroma and ability to age (present by the wine’s noticeable tannins). It is full-bodied and intense, with cherry-currant and sometimes herbal flavors."),
-
-            new Wine("Champagne",
-                    Wine.Type.Sparkling,
-                    "Sparkling White from Champagne region",
-                    "These wines are made effervescent by a secondary fermentation in the wine-making process. Champagnes and sparkling wines range in style from very dry (Natural), dry (brut) and slightly sweet (extra Dry) to sweet (sec and Demi-Sec). Many sparkling wines are also identified as Blanc de Blancs (wines made from white grapes) or Blanc de Noirs (wines produced from red grapes)."),
-
-            new Wine("Chardonnay",
-                    Wine.Type.White,
-                    "Popular, complex White from Burgundy",
-                    "One of the world’s most popular wines, Chardonnay is a white wine originating from Burgundy.  Flavors range from clean and crisp with a hint of varietal flavor to rich and complex, vanilla, butter and oak-aged wines. Chardonnay typically balances fruit, acidity and texture."),
-
-            new Wine("Chenin Blanc",
-                    Wine.Type.White,
-                    "Fresh, light White",
-                    "Chenin Blanc is a white wine with fresh, delicate floral characteristics. It grows well in warmer climates and produces light, well-balanced wines ranging from dry to off-dry (slightly sweet) styles."),
-
-            new Wine("Dolcetto",
-                    Wine.Type.Red,
-                    "Light Italian Red",
-                    "This red wine grape is found almost exclusively in Italy's Piedmont region. It produces light and fruity wine."),
-
-            new Wine("Fume Blanc",
-                    Wine.Type.White,
-                    "Dry White made from Sauvignon Blanc",
-                    "Invented by Robert Mondavi in 1970, Fume Blanc is a Sauvignon Blanc that has been fermented in oak."),
-
-            new Wine("Gewürztraminer",
-                    Wine.Type.White,
-                    "Rich German White",
-                    "Gewürztraminer is a white German wine that produced distinctive wines rich in spicy aromas and full flavors, ranging from dry to sweet. This varietal is a popular choice for Asian dishes."),
-
-            new Wine("Merlot",
-                    Wine.Type.Red,
-                    "Medium to full-bodied Red",
-                    "Merlot is a red wine with medium to full body with black cherry and herbal flavors. Merlot is typically smooth, soft and mellow."),
-
-            new Wine("Mourvedre",
-                    Wine.Type.Red,
-                    "Rich Red from Rhone Valley",
-                    "This warm-weather, red wine grape is common in Southern France's Rhone Valley. Rich in color with early aromas, often blended with Syrah."),
-
-            new Wine("Petite Sirah",
-                    Wine.Type.Red,
-                    "Robust tannic Red",
-                    "Petite Sirahs are inky red wines with firm, robust tannic tastes, often with peppery flavors. Petite Sirahs may complement meals with rich meats."),
-
-            new Wine("Pinot Gris",
-                    Wine.Type.White,
-                    "Popular German and Italian White",
-                    "The low acidity of this white grape helps produce rich, lightly perfumed wines that are often more colorful than other whites."),
-
-            new Wine("Pinot Noir",
-                    Wine.Type.Red,
-                    "Light to medium bodied Burgundy Red",
-                    "Pinot Noir is the world famous grape from Burgundy and more recently California and the Pacific Northwest.  A light to medium-body wine, pegged as one of the most difficult to grow and make. Delicate and smooth with rich complexity, Pinot Noir is a versatile dinner companion."),
-
-            new Wine("Riesling",
-                    Wine.Type.White,
-                    "Full-bodied or sweet German White",
-                    "Riesling is the classic white wine grape from Germany and known for its floral perfume. Depending on where they're made, they can be crisp and bone-dry, full-bodied and spicy or luscious and sweet."),
-
-            new Wine("Rosés",
-                    Wine.Type.Rosé,
-                    "Light, sweet, pink colored wine",
-                    "Rosés, also called blush wines, are light pink wines made from several red wine grapes. They get their color from a very short period of contact with the grape skins during the wine-making process. Rosés are light, usually somewhat sweet and best served well-chilled."),
-
-            new Wine("Sangiovese",
-                    Wine.Type.Red,
-                    "Dry Italian Red",
-                    "Sangiovese is best known as the Italian red wine, Chianti. Hearty and dry, it often displays a distinctively smooth texture with spice, raspberry and licorice flavors."),
-
-            new Wine("Sauvignon Blanc",
-                    Wine.Type.White,
-                    "Refreshing White",
-                    "Sauvignon Blanc is a white wine best known for its grassy, herbal flavors and is a popular choice for shellfish or as a refreshing alternative to Chardonnay."),
-
-            new Wine("Syrah",
-                    Wine.Type.Red,
-                    "Complex Red",
-                    "Syrah (Shiraz) can produce giant red wines with strong tannins and complex combinations of flavors including berry, plum and smoke. It's known as Shiraz mainly in Australia and South Africa."),
-
-            new Wine("Viognier",
-                    Wine.Type.White,
-                    "Aromatic White",
-                    "Viognier is a rare white grape growing in popularity for its uniqueness.  It is an aromatic variety typically displaying peach, apricot and sometimes spicy flavors."),
-
-            new Wine("Zinfandel",
-                    Wine.Type.Red,
-                    "Medium to full-bodied Red",
-                    "Zinfandel is a medium to full-bodied red wine with berry or spicy, peppery flavors. Great with pizza and tangy barbecue sauce."),
-
-    };
-
 }
