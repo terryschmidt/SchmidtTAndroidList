@@ -8,11 +8,6 @@ package com.transitiontose.schmidttandroidlist;
 
 public class Game {
 
-    enum Cover { castlevania, contra, doubledragon2, duckhunt, jackal,
-        kirby, kungfu, loderunner, mariobros, mariobros2, megaman, megaman2,
-        supertecmobowl, metroid, tetris
-    }
-
     String gameName;
     Cover cover;
     String rowDescription;
@@ -23,6 +18,11 @@ public class Game {
         this.cover = cover;
         this.rowDescription = rowDescription;
         this.detailDescription = detailDescription;
+    }
+
+    enum Cover { castlevania, contra, doubledragon2, duckhunt, jackal,
+        kirby, kungfu, loderunner, mariobros, mariobros2, megaman, megaman2,
+        supertecmobowl, metroid, tetris
     }
 
     public String getName() {
@@ -43,10 +43,6 @@ public class Game {
 
     public Cover getCover() {
         return cover;
-    }
-
-    public void setCover(Cover cover) {
-        this.cover = cover;
     }
 
     public String toString() {
